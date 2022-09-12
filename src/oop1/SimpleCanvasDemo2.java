@@ -13,14 +13,15 @@ public class SimpleCanvasDemo2 {
         SimpleCanvas canvas2 = new SimpleCanvas(300, 300, "Second Canvas");
 
         // Invoke some instance methods that operate on the canvas.
-        canvas.setPenColor(Color.BLUE);
+        canvas.setPenColor(Color.GREEN);
         canvas.drawFilledRectangle(100, 20, 50, 100);
         canvas.show();
 
         // Invoke some instance methods on the second canvas object.
-        canvas2.setPenColor(Color.RED);
-        canvas2.drawFilledCircle(150, 150, 100);
+        canvas2.setPenColor(Color.PINK);
+        canvas.drawFilledCircle(150, 150, 100);
         canvas2.drawImage(50, 50, "lynx.png");
+        canvas.show();
         canvas2.show();
 
         // Note that each object has its own identity

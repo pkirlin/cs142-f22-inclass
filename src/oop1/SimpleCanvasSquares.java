@@ -9,5 +9,9 @@ public class SimpleCanvasSquares {
         // a concentric square design similar to this:
         // https://www.levygorvy.com/works/frank-stella/
 
+        SimpleCanvas canvas = new SimpleCanvas(500, 500);
+        canvas.drawFilledRectangle(100, 100, 300, 300);
+        canvas.show();
+
     }
 }

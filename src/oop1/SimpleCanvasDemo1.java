@@ -17,10 +17,10 @@ public class SimpleCanvasDemo1 {
         // SimpleCanvas canvas = new SimpleCanvas(400, 200, "My Canvas");
 
         // Invoke some instance methods that operate on the canvas.
-        canvas.setPenColor(Color.BLUE);
+        canvas.setPenColor(Color.GREEN);
         canvas.drawFilledRectangle(100, 50, 50, 100);
         canvas.setPenColor(Color.RED);
-        canvas.setLineThickness(5);
+        canvas.setLineThickness(20);
         canvas.drawCircle(300, 100, 50);
         canvas.show();
     }
