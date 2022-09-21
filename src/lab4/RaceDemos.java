@@ -4,8 +4,8 @@ public class RaceDemos {
 
     public static void main(String[] args)
     {
-        //demo1();
-        demo2();
+        demo1();
+        //demo2();
     }
 
     public static void demo1()
