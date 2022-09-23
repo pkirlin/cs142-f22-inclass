@@ -5,19 +5,23 @@ public class CatDemo {
         Cat myer = new Cat();
         Cat cora = new Cat();
 
-        myer.age = 3;
+        myer.setAge(3);
         myer.name = "Myer";
-        cora.age = 2;
+        cora.setAge(-2);
         cora.name = "Cora";
-        System.out.println("Myer's age is " + myer.age);
-        System.out.println("Cora's age is " + cora.age);
+        System.out.println("Myer's age is " + myer.getAge());
+        System.out.println("Cora's age is " + cora.getAge());
 
         Cat anotherCat = cora;
 
-        anotherCat.age++;
+        //anotherCat.age++;
+        int temp = anotherCat.getAge();
+        anotherCat.setAge(temp+1);
 
-        System.out.println("Myer's age is " + myer.age);
-        System.out.println("Cora's age is " + cora.age);
+        anotherCat.setAge(anotherCat.getAge() + 1);
+
+        System.out.println("Myer's age is " + myer.getAge());
+        System.out.println("Cora's age is " + cora.getAge());
 
         anotherCat = myer;
 
