@@ -2,13 +2,13 @@ package oop2;
 
 public class CatDemo {
     public static void main(String[] args) {
-        Cat myer = new Cat();
-        Cat cora = new Cat();
+        Cat myer = new Cat("Myer");
+        Cat cora = new Cat("Cora");
 
         myer.setAge(3);
-        myer.name = "Myer";
+        myer.setName("Myer the awesome");
         cora.setAge(-2);
-        cora.name = "Cora";
+        //cora.setName("Cora");
         System.out.println("Myer's age is " + myer.getAge());
         System.out.println("Cora's age is " + cora.getAge());
 
