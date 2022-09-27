@@ -2,30 +2,35 @@ package oop2;
 
 public class CatDemo {
     public static void main(String[] args) {
-        Cat pumpkin = new Cat();
-        Cat tank = new Cat();
-        pumpkin.age = 9;
-        tank.age = 14;
-        pumpkin.setName("Pumpkin");
-        tank.setName("Tank the Wise");
+        Cat pumpkin = new Cat("Pumpkin", 9);
+        Cat tank = new Cat("Tank", 14);
+        //pumpkin.setAge(9);
+        //tank.setAge(14);
+        //pumpkin.setName("Pumpkin");
+        //tank.setName("Tank the Wise");
         System.out.println(tank.getName() + " is " + tank.getAge() + " years old");
         System.out.println(pumpkin.getName() + " is " + pumpkin.getAge() + " years old");
 
         Cat anotherCat = pumpkin;
         System.out.println(anotherCat.getName() + " is " + anotherCat.getAge() + " years old");
-        anotherCat.age++;
+        //anotherCat.age++;
+        anotherCat.setAge(anotherCat.getAge() + 1);
+        // int temporaryAge = anotherCat.getAge();
+        // anotherCat.setAge(temporaryAge + 1);
+
         System.out.println(pumpkin.getName() + " is " + pumpkin.getAge() + " years old");
         anotherCat = tank;
-        anotherCat.age++;
-        System.out.println(tank.name + " is " + tank.age + " years old");
+        System.out.println(tank.getName() + " is " + tank.getAge() + " years old");
 
         //anotherCat = pumpkin;
         //pumpkin = tank;
 
-        System.out.println(pumpkin.name);
+        System.out.println(pumpkin.getName());
         pumpkin.meow();
         tank.meow();
         anotherCat.meow();
+
+        System.out.println(pumpkin);
 
     }
 }
