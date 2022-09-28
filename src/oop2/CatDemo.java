@@ -9,6 +9,7 @@ public class CatDemo {
         myer.setName("Myer the awesome");
         cora.setAge(-2);
         //cora.setName("Cora");
+        //System.out.println(myer.name);
         System.out.println("Myer's age is " + myer.getAge());
         System.out.println("Cora's age is " + cora.getAge());
 
@@ -32,6 +33,9 @@ public class CatDemo {
         System.out.println(myer);
         System.out.println(cora);
         System.out.println(anotherCat);
+
+        myer.playWith(cora);
+
 
 
     }

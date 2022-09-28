@@ -81,5 +81,9 @@ public class Cat {
         energy--;
     }
 
+    public void playWith(Cat otherCat) {
+        System.out.println(name + " is playing with " + otherCat.name);
+    }
+
 
 }
