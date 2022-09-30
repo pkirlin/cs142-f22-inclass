@@ -32,5 +32,7 @@ public class CatDemo {
 
         System.out.println(pumpkin);
 
+        pumpkin.playWith(tank);
+        tank.playWith(pumpkin);
     }
 }

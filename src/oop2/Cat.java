@@ -62,4 +62,8 @@ public class Cat {
         return "name: " + name + ", age: " + age + ", energy: " + energy;
     }
 
+    public void playWith(Cat otherCat) {
+        System.out.println(name + " plays with " + otherCat.name);
+    }
+
 }
