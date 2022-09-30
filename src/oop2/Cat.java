@@ -23,8 +23,6 @@ public class Cat {
         System.out.println("Constructing a cat with a name.");
     }
 
-
-
     public double getWeight() {
         return weight;
     }
@@ -40,8 +38,6 @@ public class Cat {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
-
-
 
     public int getAge() {
         return age;
@@ -64,12 +60,16 @@ public class Cat {
         name = newName;
     }
 
-    void meow() {
+    public void meow() {
         if (age <= 1) {
             System.out.println(name + " says meow!!");
         } else {
             System.out.println(name + " says MEOW MEOW MEOW!!!!!");
         }
+    }
+
+    public void meow(String whatToSay) {
+        System.out.println(name + " says " + whatToSay);
     }
 
     public String toString() {
