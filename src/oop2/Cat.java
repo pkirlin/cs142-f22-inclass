@@ -54,8 +54,12 @@ public class Cat {
         this.energy = energy;
     }
 
-    void meow() {
+    public void meow() {
         System.out.println(name + " says meow!!");
+    }
+
+    public void meow(String whatToSay) {
+        System.out.println(name + " says " + whatToSay);
     }
 
     public String toString() {

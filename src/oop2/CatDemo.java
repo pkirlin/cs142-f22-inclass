@@ -2,7 +2,7 @@ package oop2;
 
 public class CatDemo {
     public static void main(String[] args) {
-        Cat pumpkin = new Cat("Pumpkin", 9);
+        /*Cat pumpkin = new Cat("Pumpkin", 9);
         Cat tank = new Cat("Tank", 14);
         //pumpkin.setAge(9);
         //tank.setAge(14);
@@ -29,10 +29,28 @@ public class CatDemo {
         pumpkin.meow();
         tank.meow();
         anotherCat.meow();
+        tank.meow("Hello world!");
 
         System.out.println(pumpkin);
 
         pumpkin.playWith(tank);
-        tank.playWith(pumpkin);
+        tank.playWith(pumpkin);*/
+
+        Cat[] myCats = new Cat[3];
+
+        Cat fluffy = new Cat();
+        myCats[0] = new Cat("Pumpkin", 5);
+        myCats[1] = new Cat("Socks", 9);
+        myCats[2] = new Cat("Greg", 4);
+        System.out.println(fluffy);
+        System.out.println(myCats[0]);
+        //System.out.println(socks);
+
+        int total = 0;
+        for (int i = 0; i < myCats.length; i++) {
+            total += myCats[i].getAge();
+        }
+        System.out.println("The total ages of all the cats is: " + total);
+
     }
 }
