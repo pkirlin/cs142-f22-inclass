@@ -6,12 +6,16 @@ public class Cat {
     private double weight;
     private int energy;
 
+    static private int numberOfCats = 0;
+
     public Cat() {  // default constructor
         age = 1;
         weight = 2;
         energy = 5;
         name = "Whiskers";
+        numberOfCats++;
         System.out.println("Constructing a new cat");
+        System.out.println("Our program has " + numberOfCats + " cats.");
     }
 
     public Cat(String newName, int newAge) {
@@ -19,7 +23,9 @@ public class Cat {
         weight = 2;
         energy = 5;
         name = newName;
+        numberOfCats++;
         System.out.println("Constructing a new cat");
+        System.out.println("Our program has " + numberOfCats + " cats.");
     }
 
     public String getName() {

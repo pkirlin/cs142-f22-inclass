@@ -46,6 +46,9 @@ public class CatDemo {
         System.out.println(myCats[0]);
         //System.out.println(socks);
 
+        Cat anotherCat = fluffy;
+        Cat someothercat = anotherCat;
+
         int total = 0;
         for (int i = 0; i < myCats.length; i++) {
             total += myCats[i].getAge();
