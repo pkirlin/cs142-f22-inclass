@@ -2,24 +2,61 @@ package lab6;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * A SimpleCanvas represents a window on the screen that can be drawn on.
  */
 public class SimpleCanvas {
     private JFrame frame;
-    private Graphics2D onscreenGraphics;
-    private BufferedImage onscreenImage;
+    private Graphics2D onscreenGraphics, offscreenGraphics;
+    private BufferedImage onscreenImage, offscreenImage;
     //private Color penColor;
     private int height, width;
     private Color bgColor = Color.WHITE;
     private int lastMouseClickX = 0, lastMouseClickY = 0;
+    private boolean isMousePressed = false;
+    private double mouseX = 0;
+    private double mouseY = 0;
+
+    // for synchronization
+    private static Object mouseLock = new Object();
+    private static Object keyLock = new Object();
+
+    // queue of typed key characters
+    private LinkedList<Character> keysTyped;
+
+    // set of key codes currently pressed down
+    private Set<Integer> keysDown;
+
+    public boolean isMousePressed() {
+        synchronized (mouseLock) {
+            return isMousePressed;
+        }
+    }
+
+    public double getMouseX() {
+        synchronized (mouseLock) {
+            return mouseX;
+        }
+    }
+
+    public double getMouseY() {
+        synchronized (mouseLock) {
+            return mouseY;
+        }
+    }
 
     /**
      * Creates a new SimpleCanvas of the specified width and height.
@@ -42,20 +79,26 @@ public class SimpleCanvas {
                 frame = new JFrame(title);
                 frame.setVisible(false);
                 onscreenImage = new BufferedImage(2 * width, 2 * height, BufferedImage.TYPE_INT_ARGB);
+                offscreenImage = new BufferedImage(2 * width, 2 * height, BufferedImage.TYPE_INT_ARGB);
                 onscreenGraphics = onscreenImage.createGraphics();
+                offscreenGraphics = offscreenImage.createGraphics();
                 onscreenGraphics.scale(2, 2);
+
+                // initialize keystroke buffers
+                keysTyped = new LinkedList<Character>();
+                keysDown = new TreeSet<Integer>();
 
                 // add antialiasing
                 RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
                 hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                onscreenGraphics.addRenderingHints(hints);
+                offscreenGraphics.addRenderingHints(hints);
 
                 // clear screen
-                onscreenGraphics.setColor(bgColor);
-                onscreenGraphics.fillRect(0, 0, width, height);
+                offscreenGraphics.setColor(bgColor);
+                offscreenGraphics.fillRect(0, 0, width, height);
                 //System.out.println("painted BG");
-                onscreenGraphics.setColor(Color.BLACK);
+                offscreenGraphics.setColor(Color.BLACK);
 
                 // frame stuff
                 RetinaImageIcon icon = new RetinaImageIcon(onscreenImage);
@@ -63,11 +106,52 @@ public class SimpleCanvas {
                 draw.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseReleased(MouseEvent e) {
-                        lastMouseClickX = e.getX();
-                        lastMouseClickY = e.getY();
+                        synchronized (mouseLock) {
+                            lastMouseClickX = e.getX();
+                            lastMouseClickY = e.getY();
+                            isMousePressed = false;
+                        }
+                    }
+
+                    public void mousePressed(MouseEvent e) {
+                        synchronized (mouseLock) {
+                            lastMouseClickX = e.getX();
+                            lastMouseClickY = e.getY();
+                            isMousePressed = true;
+                        }
+                    }
+
+                    public void mouseDragged(MouseEvent e)  {
+                        synchronized (mouseLock) {
+                            lastMouseClickX = e.getX();
+                            lastMouseClickX = e.getY();
+                        }
                     }
                 });
                 frame.setContentPane(draw);
+                frame.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysTyped.addFirst(e.getKeyChar());
+                        }
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysDown.add(e.getKeyCode());
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysDown.remove(e.getKeyCode());
+                        }
+                    }
+                });
+                frame.setFocusTraversalKeysEnabled(false);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setResizable(false);
                 frame.pack();
@@ -75,6 +159,28 @@ public class SimpleCanvas {
                 //System.out.println("done constructor");
             }
         });
+    }
+
+    public boolean hasNextKeyTyped() {
+        synchronized (keyLock) {
+            return !keysTyped.isEmpty();
+        }
+    }
+
+    public char nextKeyTyped() {
+        synchronized (keyLock) {
+            if (keysTyped.isEmpty()) {
+                throw new NoSuchElementException("your program has already processed all keystrokes");
+            }
+            return keysTyped.remove(keysTyped.size() - 1);
+            // return keysTyped.removeLast();
+        }
+    }
+
+    public boolean isKeyPressed(int keycode) {
+        synchronized (keyLock) {
+            return keysDown.contains(keycode);
+        }
     }
 
     private static class MouseWaiter extends MouseAdapter {
@@ -141,11 +247,10 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Color saveColor = onscreenGraphics.getColor();
-                onscreenGraphics.setColor(bgColor);
-                onscreenGraphics.fillRect(0, 0, width, height);
-                onscreenGraphics.setColor(saveColor);
-
+                Color saveColor = offscreenGraphics.getColor();
+                offscreenGraphics.setColor(bgColor);
+                offscreenGraphics.fillRect(0, 0, width, height);
+                offscreenGraphics.setColor(saveColor);
             }
         });
     }
@@ -157,7 +262,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+                offscreenGraphics.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
                 //frame.repaint();
             }
         });
@@ -171,7 +276,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.drawOval(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2);
+                offscreenGraphics.drawOval(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2);
                 //frame.repaint();
             }
         });
@@ -185,7 +290,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.drawRect(topLeftX, topLeftY, width, height);
+                offscreenGraphics.drawRect(topLeftX, topLeftY, width, height);
                 //frame.repaint();
             }
         });
@@ -195,7 +300,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.drawPolygon(xPoints, yPoints, xPoints.length);
+                offscreenGraphics.drawPolygon(xPoints, yPoints, xPoints.length);
                 //frame.repaint();
             }
         });
@@ -205,7 +310,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.fillPolygon(xPoints, yPoints, xPoints.length);
+                offscreenGraphics.fillPolygon(xPoints, yPoints, xPoints.length);
                 //frame.repaint();
             }
         });
@@ -219,7 +324,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+                offscreenGraphics.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
                 //onscreenImage.
                 //frame.repaint();
             }
@@ -234,7 +339,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.fillOval(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2);
+                offscreenGraphics.fillOval(centerX - radiusX, centerY - radiusY, radiusX * 2, radiusY * 2);
                 //onscreenImage.
                 //frame.repaint();
             }
@@ -249,7 +354,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.fillRect(topLeftX, topLeftY, width, height);
+                offscreenGraphics.fillRect(topLeftX, topLeftY, width, height);
                 //onscreenImage.
                 //frame.repaint();
             }
@@ -263,7 +368,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.drawLine(x1, y1, x2, y2);
+                offscreenGraphics.drawLine(x1, y1, x2, y2);
             }
         });
     }
@@ -291,10 +396,10 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Font currentFont = onscreenGraphics.getFont();
+                Font currentFont = offscreenGraphics.getFont();
                 Font newFont = new Font(currentFont.getFontName(), currentFont.getStyle(), fontSize);
-                onscreenGraphics.setFont(newFont);
-                onscreenGraphics.drawString(text, x, y);
+                offscreenGraphics.setFont(newFont);
+                offscreenGraphics.drawString(text, x, y);
             }
         });
     }
@@ -307,16 +412,16 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Font currentFont = onscreenGraphics.getFont();
+                Font currentFont = offscreenGraphics.getFont();
                 Font newFont = new Font(currentFont.getFontName(), currentFont.getStyle(), fontSize);
-                onscreenGraphics.setFont(newFont);
+                offscreenGraphics.setFont(newFont);
 
-                FontMetrics metrics = onscreenGraphics.getFontMetrics(newFont);
+                FontMetrics metrics = offscreenGraphics.getFontMetrics(newFont);
                 int stringWidth = metrics.stringWidth(text);
                 int stringHeight = metrics.getHeight();
                 //System.out.println(stringWidth + " " + stringHeight);
 
-                onscreenGraphics.drawString(text, x - stringWidth / 2, y + stringHeight / 2 - metrics.getAscent() / 2);
+                offscreenGraphics.drawString(text, x - stringWidth / 2, y + stringHeight / 2 - metrics.getAscent() / 2);
             }
         });
     }
@@ -328,7 +433,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.setStroke(new BasicStroke(size));
+                offscreenGraphics.setStroke(new BasicStroke(size));
             }
         });
     }
@@ -351,8 +456,33 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //onscreenGraphics.drawImage(image, (int) Math.round(xs - ws/2.0), (int) Math.round(ys - hs/2.0), null);
-                onscreenGraphics.drawImage(image, x, y, null);
+                //offscreenGraphics.drawImage(image, (int) Math.round(xs - ws/2.0), (int) Math.round(ys - hs/2.0), null);
+                offscreenGraphics.drawImage(image, x, y, null);
+                //frame.repaint();
+            }
+        });
+    }
+
+    /**
+     * Draws the specified image on the canvas with the top left corner of the image at the point (x, y).
+     * The image string can be a URL or a filename, and must be either a .jpg or .png, though other times
+     * might work too.
+     */
+    public void drawImage(int x, int y, String filename, int width, int height) {
+        Image image = getImage(filename);
+        // int ws = image.getWidth();    // can call only if image is a BufferedImage
+        // int hs = image.getHeight();
+        int ws = image.getWidth(null);
+        int hs = image.getHeight(null);
+        int xs = x * 2;
+        int ys = y * 2;
+        if (ws < 0 || hs < 0) throw new IllegalArgumentException("image " + filename + " is corrupt");
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                //offscreenGraphics.drawImage(image, (int) Math.round(xs - ws/2.0), (int) Math.round(ys - hs/2.0), null);
+                offscreenGraphics.drawImage(image, x, y, width, height,null);
                 //frame.repaint();
             }
         });
@@ -366,7 +496,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenGraphics.setColor(c);
+                offscreenGraphics.setColor(c);
             }
         });
     }
@@ -392,7 +522,7 @@ public class SimpleCanvas {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    answer[0] = new Color(onscreenImage.getRGB(2 * x, 2 * y), true);
+                    answer[0] = new Color(offscreenImage.getRGB(2 * x, 2 * y), true);
                 }
             });
         } catch (InterruptedException | InvocationTargetException e) {
@@ -408,7 +538,7 @@ public class SimpleCanvas {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                onscreenImage.setRGB(2 * x, 2 * y, c.getRGB());
+                offscreenImage.setRGB(2 * x, 2 * y, c.getRGB());
                 //frame.repaint();
             }
         });
@@ -496,6 +626,8 @@ public class SimpleCanvas {
             @Override
             public void run() {
                 //System.out.println("EDT: repaint from update");
+                onscreenGraphics.drawImage(offscreenImage, 0, 0, null);
+                //frame.repaint();
                 frame.repaint();
             }
         });
@@ -562,5 +694,10 @@ public class SimpleCanvas {
         }
 
         return icon.getImage();
+    }
+
+    class Keys
+    {
+
     }
 }
