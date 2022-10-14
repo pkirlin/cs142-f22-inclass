@@ -8,17 +8,47 @@ public class Exercises {
 
     public static void main(String[] args)
     {
-        readWords();
+        //readWords();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(10);
+        list.add(20);
+        list.add(30);
+        list.add(40);
+        list.add(50);
+        reverseArrayList(list);
+        System.out.println(list);
+
+        String s = "abc";
+        String answer = reverseString(s);
+        System.out.println(answer);
     }
 
     public static void reverseArrayList(ArrayList<Integer> list)
     {
-
+        int j = list.size() - 1;
+        for (int i = 0; i < list.size()/2; i++) {
+            // do algorithm here
+            int number = list.get(i);
+            int temp = list.get(j);
+            list.set(j, number);
+            list.set(i, temp);
+            j--;
+        }
     }
 
     public static String reverseString(String str)
     {
-        return "";
+        String answer = "";
+        /*for (int i = str.length()-1; i >= 0; i--) {
+            answer += str.charAt(i);
+        }*/
+        /*for (int i = 0; i < str.length(); i++) {
+            answer += str.charAt(str.length() - 1 - i);
+        }*/
+        for (int i = 0; i < str.length(); i++) {
+            answer = str.charAt(i) + answer;
+        }
+        return answer;
     }
 
     public static ArrayList<String> readWords() {
