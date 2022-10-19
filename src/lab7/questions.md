@@ -286,6 +286,9 @@ other snake!  I recommend starting the second snake at a different
 spot on the board than the first snake (far away from it).
 
 Bonus enhancements: 
+- Prevent snake from turning 180 degrees at once
+  (i.e., snake can't switch from north to south at once; only
+  90 degree turns are allowed).
 - Detect which player wins at the end.
 - Keep a score for each player.
 - Add other things for the snakes to eat besides apples that might
