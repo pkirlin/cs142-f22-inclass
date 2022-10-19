@@ -294,3 +294,4 @@ Bonus enhancements:
 - Add other things for the snakes to eat besides apples that might
   do different things.
 - Speed up the game as it goes on.
+- Have two (or more) apples on the board simultaneously.
