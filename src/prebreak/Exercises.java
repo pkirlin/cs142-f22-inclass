@@ -9,16 +9,52 @@ public class Exercises {
     public static void main(String[] args)
     {
         readWords();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(10);
+        list.add(20);
+        list.add(30);
+        list.add(40);
+        list.add(50);
+        reverseArrayList(list);
+        System.out.println(list);
+
+        String s = "abc";
+        System.out.println(reverseString(s));
     }
 
     public static void reverseArrayList(ArrayList<Integer> list)
     {
-
+        int j = list.size() - 1;
+        for (int i = 0; i < list.size()/2; i++) {
+            // algorithm
+            int num = list.get(i);
+            int newnum = list.get(j);
+            list.set(j, num);
+            list.set(i, newnum);
+            j--;
+        }
     }
 
     public static String reverseString(String str)
     {
-        return "";
+        String answer = "";
+        // algorithm
+        /*int j = str.length() - 1;
+        for (int i = 0; i < str.length(); i++) {
+            answer += str.charAt(j);
+            j--;
+        }*/
+
+
+        /*for (int i = str.length()-1; i >= 0; i--) {
+            answer += str.charAt(i);
+        }*/
+
+        for (int i = 0; i < str.length(); i++) {
+            answer = str.charAt(i) + answer;
+        }
+
+        return answer;
     }
 
     public static ArrayList<String> readWords() {
@@ -29,11 +65,13 @@ public class Exercises {
         }
         Scanner scan = new Scanner(is);
 
+        ArrayList<String> words = new ArrayList<String>();
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
             System.out.println(line);
+            words.add(line);
         }
-        return null;
+        return words;
     }
 
     public static int linearSearch(ArrayList<String> list, String lookingFor)
