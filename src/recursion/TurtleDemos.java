@@ -5,7 +5,7 @@ import java.awt.*;
 public class TurtleDemos {
     public static void main(String[] args)
     {
-        demo1();
+        demo2();
     }
 
     public static void demo1()

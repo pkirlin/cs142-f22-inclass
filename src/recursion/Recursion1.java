@@ -4,21 +4,31 @@ public class Recursion1 {
 
     public static void main(String[] args)
     {
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 30; i++)
         {
-            long factAnswer = fact(i);
+            long factAnswer = factRec(i);
             System.out.println("The factorial of " + i + " is " + factAnswer);
         }
     }
 
     public static long fact(int num)
     {
-        return 0; // remove this when you start coding
+        long factorial = num;
+        // for loop
+        for (int i = num-1; i > 0; i--) {
+            factorial = factorial * i;
+        }
+        return factorial;
     }
 
     public static long factRec(int num)
     {
-        return 0; // remove this when you start coding
+        if (num == 1) {  // base case
+            return 1;
+        }
+        else {  // recursive case
+            return factRec(num-1) * num;
+        }
     }
 
     public static String reverse(String str)
