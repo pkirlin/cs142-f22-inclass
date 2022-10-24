@@ -4,6 +4,8 @@ public class Recursion2 {
 
     public static void main(String[] args)
     {
+        //System.out.println(reverseRec("abcde"));
+        weird(3);
         for (int i = 1; i <= 10; i++)
         {
             long factAnswer = fact(i);
@@ -69,7 +71,15 @@ public class Recursion2 {
      */
     public static String reverseRec(String str)
     {
-        return ""; // remove this when you start coding
+        if (str.length() == 1) {
+            return str;
+        }
+        else {
+            char lastChar = str.charAt(str.length() - 1);
+            String everythingButLastChar = str.substring(0, str.length() - 1);
+            String reversed = reverseRec(everythingButLastChar);
+            return lastChar + reversed;
+        }
     }
 
     /**
@@ -83,6 +93,7 @@ public class Recursion2 {
         else {
             System.out.println(n);
             weird(n - 1);
+            System.out.println(n);
         }
     }
 
