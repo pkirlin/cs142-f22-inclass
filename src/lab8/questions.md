@@ -33,7 +33,7 @@ colors.
 __Draw this on a separate sheet of paper.__
 
 - How many total calls, including the first one, are there to the 
-Fibonacci function in your diagram?  In other words, when you call
+factorial function in your diagram?  In other words, when you call
 fact(4), how many times is the fact function called (including the 
 initial call)?
 
