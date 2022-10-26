@@ -8,7 +8,7 @@
 
 ## Part A: Factorial, Fibonacci, and Funky
 
-Open RecursiveFunction.java.  In this file, there are three
+Open RecursiveFunctions.java.  In this file, there are three
 recursive functions written for you near the top (after main and
 some test functions).  Factorial and Fibonacci you are already 
 familiar with.  "Funky" is a variant of the "weird" function from 
