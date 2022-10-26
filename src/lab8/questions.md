@@ -30,7 +30,8 @@ colors.
 
 - Draw a recursion diagram for fact(4).
 
-__Draw this on a separate sheet of paper.__
+__Draw this on a separate sheet of paper (or a separate area
+of the same paper).__
 
 - How many total calls, including the first one, are there to the 
 factorial function in your diagram?  In other words, when you call
