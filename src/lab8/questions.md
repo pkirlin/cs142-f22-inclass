@@ -145,8 +145,8 @@ twoToNthPower(1) = 2^1 = 2
 twoToNthPower(2) = 2^2 = 2 * 2 = 4
 twoToNthPower(3) = 2^3 = 2 * 2 * 2 = 8
 twoToNthPower(4) = 2^4 = 2 * 2 * 2 * 2 = 16
-twoToNthPower(5) = 2^3 = 2 * 2 * 2 * 2 * 2 = 32
-twoToNthPower(6) = 2^4 = 2 * 2 * 2 * 2 * 2 * 2 = 64
+twoToNthPower(5) = 2^5 = 2 * 2 * 2 * 2 * 2 = 32
+twoToNthPower(6) = 2^6 = 2 * 2 * 2 * 2 * 2 * 2 = 64
 etc
 
 - Following the same process as above, write formulas below
