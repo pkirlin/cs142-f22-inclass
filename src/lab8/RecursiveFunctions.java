@@ -25,7 +25,7 @@ public class RecursiveFunctions {
 
     /** Function for testing the fibonacci function. */
     public static void testFibonacci() {
-        for (int i = 1; i <= 10; i++)
+        for (int i = 0; i <= 10; i++)
         {
             System.out.println("i = " + i + ", fib(i) = " + fib(i));
         }
