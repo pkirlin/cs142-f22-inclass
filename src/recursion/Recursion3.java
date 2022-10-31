@@ -11,7 +11,8 @@ public class Recursion3 {
         System.out.println("Sum is " + sumOfArrayList(mylist));
 
         // test max of arraylist:
-
+        ArrayList<Integer> mylist2 = new ArrayList<Integer>(Arrays.asList(7, 8, 9, 2, 14));
+        System.out.println("Max is " + maxOfArrayList(mylist2));
     }
 
     // Calculate the sum of all the elements in an arraylist.
@@ -35,13 +36,28 @@ public class Recursion3 {
     // Calculate the largest element in an arraylist.
     public static int maxOfArrayList(ArrayList<Integer> list)
     {
-        return 0;
+        return maxOfArrayList(list, 0);
     }
 
     // Helper function for above.
     private static int maxOfArrayList(ArrayList<Integer> list, int leftIdx)
     {
-        return 0;
+        if (leftIdx == list.size()-1) {  // if there's only one element in our "sub-list"
+            return list.get(leftIdx);
+        }
+        else {  // recursive case
+            int largest = maxOfArrayList(list, leftIdx + 1);
+            if (list.get(leftIdx) > largest) {
+                return list.get(leftIdx);
+            }
+            else {
+                return largest;
+            }
+
+
+            //int smallerSum = sumOfArrayList(list, leftIdx + 1);
+            //return list.get(leftIdx) + smallerSum;
+        }
     }
 
 }
