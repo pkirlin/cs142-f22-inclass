@@ -12,8 +12,8 @@ public class BinarySearch {
         System.out.println("Iterative version: found at index " + indexFound);
 
         // test binary search, recursive version:
-        //indexFound = binarySearchRec(sortedList, 33);
-        //System.out.println("Recursive version: found at index " + indexFound);
+        indexFound = binarySearchRec(sortedList, 33);
+        System.out.println("Recursive version: found at index " + indexFound);
     }
 
 
@@ -37,11 +37,23 @@ public class BinarySearch {
 
     // Recursive binary search.
     public static int binarySearchRec(ArrayList<Integer> list, int key) {
-        return 0;
+        return binarySearchRec(list, key, 0, list.size()-1);
     }
 
     // Helper method for above.
-    public static int binarySearchRec(ArrayList<Integer> list, int key, int high, int low) {
-        return 0;
+    public static int binarySearchRec(ArrayList<Integer> list, int key, int low, int high) {
+        if (low > high) {  // base case #1 - if item is not found
+            return -1;
+        }
+        int mid = (low + high) / 2;
+        if (list.get(mid) == key) {  // base case #2: if list[mid] == key
+            return mid;
+        }
+        else if (list.get(mid) > key) {
+            return binarySearchRec(list, key, low, mid - 1);
+        }
+        else {
+            return binarySearchRec(list, key, mid + 1, high);
+        }
     }
 }
