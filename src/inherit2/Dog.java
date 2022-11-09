@@ -5,12 +5,18 @@ public class Dog
     protected String name;  // name is now visible inside this class and derived classes.
     private int age;
 
+    public Dog(String newName, int newAge) {
+        System.out.println("Constructing a dog.");
+        name = newName;
+        age = newAge;
+    }
+
     public void speak() {
         System.out.println(name + " says woof woof!");
     }
 
     public void chase(Dog otherdog) {
-        System.out.println(name + " chases " + otherdog.name);
+        System.out.println(this.name + " chases " + otherdog.name);
     }
 
     public String getName() {
