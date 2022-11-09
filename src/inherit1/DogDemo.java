@@ -12,5 +12,13 @@ public class DogDemo {
 
         System.out.println(fido);
         System.out.println(toto);
+
+        ShowDog princess = new ShowDog();
+        princess.setName("Princess");
+        princess.setAge(4);
+        System.out.println(princess);
+        princess.launderMoney();
+        princess.speak();
+        //toto.launderMoney();  illegal, regular dogs can't launder money
     }
 }
