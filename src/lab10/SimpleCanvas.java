@@ -1,13 +1,19 @@
-package lab9;
+package lab10;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * A SimpleCanvas represents a window on the screen that can be drawn on.
@@ -20,13 +26,19 @@ public class SimpleCanvas {
     private int height, width;
     private Color bgColor = Color.WHITE;
     private int lastMouseClickX = 0, lastMouseClickY = 0;
-    private  boolean isMousePressed = false;
-    private  double mouseX = 0;
-    private  double mouseY = 0;
+    private boolean isMousePressed = false;
+    private double mouseX = 0;
+    private double mouseY = 0;
 
     // for synchronization
     private static Object mouseLock = new Object();
     private static Object keyLock = new Object();
+
+    // queue of typed key characters
+    private LinkedList<Character> keysTyped;
+
+    // set of key codes currently pressed down
+    private Set<Integer> keysDown;
 
     public boolean isMousePressed() {
         synchronized (mouseLock) {
@@ -72,6 +84,10 @@ public class SimpleCanvas {
                 offscreenGraphics = offscreenImage.createGraphics();
                 onscreenGraphics.scale(2, 2);
 
+                // initialize keystroke buffers
+                keysTyped = new LinkedList<Character>();
+                keysDown = new TreeSet<Integer>();
+
                 // add antialiasing
                 RenderingHints hints = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
                         RenderingHints.VALUE_ANTIALIAS_ON);
@@ -113,6 +129,29 @@ public class SimpleCanvas {
                     }
                 });
                 frame.setContentPane(draw);
+                frame.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysTyped.addFirst(e.getKeyChar());
+                        }
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysDown.add(e.getKeyCode());
+                        }
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        synchronized (keyLock) {
+                            keysDown.remove(e.getKeyCode());
+                        }
+                    }
+                });
+                frame.setFocusTraversalKeysEnabled(false);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setResizable(false);
                 frame.pack();
@@ -120,6 +159,28 @@ public class SimpleCanvas {
                 //System.out.println("done constructor");
             }
         });
+    }
+
+    public boolean hasNextKeyTyped() {
+        synchronized (keyLock) {
+            return !keysTyped.isEmpty();
+        }
+    }
+
+    public char nextKeyTyped() {
+        synchronized (keyLock) {
+            if (keysTyped.isEmpty()) {
+                throw new NoSuchElementException("your program has already processed all keystrokes");
+            }
+            return keysTyped.remove(keysTyped.size() - 1);
+            // return keysTyped.removeLast();
+        }
+    }
+
+    public boolean isKeyPressed(int keycode) {
+        synchronized (keyLock) {
+            return keysDown.contains(keycode);
+        }
     }
 
     private static class MouseWaiter extends MouseAdapter {
@@ -633,5 +694,10 @@ public class SimpleCanvas {
         }
 
         return icon.getImage();
+    }
+
+    class Keys
+    {
+
     }
 }

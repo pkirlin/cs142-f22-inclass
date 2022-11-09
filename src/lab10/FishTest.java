@@ -1,4 +1,4 @@
-package lab9;
+package lab10;
 
 public class FishTest {
     public static void main(String[] args)

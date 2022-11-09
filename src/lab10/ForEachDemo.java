@@ -1,4 +1,4 @@
-package lab9;
+package lab10;
 
 import java.util.ArrayList;
 

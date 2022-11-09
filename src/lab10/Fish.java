@@ -1,4 +1,4 @@
-package lab9;
+package lab10;
 
 /** This class represents a fish living in a fishbowl (a canvas).
  * Fish are drawn as pictures on a canvas.  The pictures are always square.

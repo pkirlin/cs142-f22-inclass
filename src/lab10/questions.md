@@ -1,4 +1,4 @@
-# Lab 9: Inheritance and Polymorphism
+# Lab 10: Inheritance and Polymorphism
 ## a.k.a. Here, Fishy Fishy Fishy
 
 In this lab, you will practice writing classes using inheritance,
@@ -11,8 +11,6 @@ and also learn about a new topic called polymorphism.
 - Name 3
 
 ## Part A
-
-(This is the assignment from the end of Friday's class.)
 
 Imagine we are designing some classes to be used in a car-racing
 game.  Open Car.java and CarDemo.java.  Look through the Car 
