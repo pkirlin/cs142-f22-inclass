@@ -3,7 +3,7 @@ package inherit2;
 import java.awt.*;
 
 public class Parrot {
-    private int energy;
+    protected int energy;
     private Color color;
 
     public int getEnergy() {
