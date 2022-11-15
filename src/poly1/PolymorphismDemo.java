@@ -1,6 +1,7 @@
 package poly1;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PolymorphismDemo {
 
@@ -107,6 +108,9 @@ public class PolymorphismDemo {
 
         for (Dog d : listOfDogs)
         {
+            String x = "dog";
+            if (x.toUpperCase(Locale.ROOT) == "y")
+                System.out.println("x");
             if (d instanceof ShowDog) {
                 stuckUpDog.chase(d);
             }
