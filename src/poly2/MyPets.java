@@ -11,11 +11,13 @@ public class MyPets {
         mypets.add(new ShowDog("Lassie", 5));
         mypets.add(new Cat("Snowball", 3));
 
+        //Pet p = new Pet("Tom", 6);
+        //p.speak();
+
         for (Pet p : mypets)
         {
             System.out.println(p);
-            // I want p to speak!
-
+            p.speak();
         }
     }
 }
