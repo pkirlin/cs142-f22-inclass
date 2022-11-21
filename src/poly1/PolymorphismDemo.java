@@ -58,6 +58,7 @@ public class PolymorphismDemo {
         if (d instanceof ShowDog) {
             ShowDog sd = (ShowDog)d;
             sd.dance();
+            //d.dance(); doesn't work!
             //((ShowDog)d).dance();
         }
     }
