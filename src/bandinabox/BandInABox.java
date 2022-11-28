@@ -8,19 +8,20 @@ import java.util.ArrayList;
 
 public class BandInABox {
     public static void main(String[] args) {
+        System.out.println("end of substring");
         ArrayList<Note> yankeeDoodle = createYankeeDoodle();
         ArrayList<Instrument> band = new ArrayList<Instrument>();
 
         Guitar guitar = new Guitar();
-        //band.add(guitar);
+        band.add(guitar);
 
         // add a bass
         Bass b = new Bass();
-        //band.add(b);
+        band.add(b);
 
         // add a violin
         Violin v = new Violin();
-        //band.add(v);
+        band.add(v);
 
         playAll(band, yankeeDoodle);
         playAllWithSound(band, yankeeDoodle);
