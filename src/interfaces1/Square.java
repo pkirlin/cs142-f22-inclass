@@ -2,7 +2,7 @@ package interfaces1;
 
 import java.awt.*;
 
-public class Square extends Shape {
+public class Square extends Shape implements Drawable {
     private int sideLength;
 
     public Square(int newSideLength, Color c) {
@@ -18,4 +18,8 @@ public class Square extends Shape {
         return "Square with side length=" + sideLength;
     }
 
+    @Override
+    public void drawOn(SimpleCanvas canvas, int locationX, int locationY) {
+        canvas.drawRectangle(locationX, locationY, sideLength, sideLength);
+    }
 }

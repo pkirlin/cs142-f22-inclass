@@ -14,13 +14,25 @@ public class DrawingDemo {
 
         // Write code here to make an arraylist and add the
         // objects we want to draw into the arraylist.
+        ArrayList<Drawable> stuffToDraw = new ArrayList<Drawable>();
+        stuffToDraw.add(circle);
+        stuffToDraw.add(square);
+        stuffToDraw.add(fido);
+        stuffToDraw.add(lassie);
 
         // Call the drawAllObjects function.
+        drawAllObjects(stuffToDraw);
     }
 
-    /*public static void drawAllObjects(ArrayList<???> list)
+    public static void drawAllObjects(ArrayList<Drawable> list)
     {
         SimpleCanvas canvas = new SimpleCanvas(500, 500);
         canvas.show();
-    }*/
+
+        for (Drawable d : list) {
+            int randomLocation = (int)(Math.random() * 500);
+            d.drawOn(canvas, randomLocation, randomLocation);
+        }
+        canvas.update();
+    }
 }

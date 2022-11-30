@@ -30,4 +30,8 @@ public class ShowDog extends Dog {
         System.out.println("   and " + getName() + " also says woof woof in French.");
     }
 
+    public void drawOn(SimpleCanvas canvas, int locationX, int locationY) {
+        canvas.drawImage(locationX, locationY, "showdog.png");
+    }
+
 }

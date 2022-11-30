@@ -2,7 +2,7 @@ package interfaces1;
 
 import java.awt.*;
 
-public class Circle extends Shape {
+public class Circle extends Shape implements Drawable {
     private int radius;
 
     public Circle(int newRadius, Color c) {
@@ -18,4 +18,8 @@ public class Circle extends Shape {
         return "Circle: radius=" + radius;
     }
 
+    @Override
+    public void drawOn(SimpleCanvas canvas, int locationX, int locationY) {
+        canvas.drawCircle(locationX, locationY, radius);
+    }
 }
