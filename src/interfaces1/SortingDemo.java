@@ -26,7 +26,7 @@ public class SortingDemo {
         someFractions.add(new Fraction(3, 4)); //   3/4
 
         System.out.println(someFractions);
-        //Collections.sort(someFractions);
+        Collections.sort(someFractions);
         System.out.println(someFractions);
     }
 }
