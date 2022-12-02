@@ -36,7 +36,7 @@ public class CodeTimerDemos {
 
     public static void measureFibonacci() {
         FibonacciTimer timer = new FibonacciTimer();
-        double time = timer.measureTimeOnOneSize(1000);
+        double time = timer.measureTimeOnOneSize(5);
         System.out.println("elapsed time: " + time);
         //timer.measureTimeOnAllSizes(List.of(5, 10, 15, 20, 25, 30));
     }
