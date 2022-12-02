@@ -5,18 +5,18 @@ import java.util.List;
 public class CodeTimerDemos {
     public static void main(String[] args)
     {
-        measureSumOfArrayBad();
+        //measureSumOfArrayBad();
 
         //measureSumOfArray();
 
-        //measureSumOf2DArray();
+        measureSumOf2DArray();
 
         //measureFibonacci();
     }
 
     public static void measureSumOfArrayBad() {
         ArraySumTimerBad timer = new ArraySumTimerBad();
-        double time = timer.measureTimeOnOneSize(10);
+        double time = timer.measureTimeOnOneSize(1000000);
         System.out.println("elapsed time: " + time);
     }
 
@@ -24,14 +24,14 @@ public class CodeTimerDemos {
         ArraySumTimer timer = new ArraySumTimer();
         double time = timer.measureTimeOnOneSize(1000);
         System.out.println("elapsed time: " + time);
-        //timer.measureTimeOnAllSizes(List.of(1000, 2000, 4000, 8000, 16000, 32000, 64000));
+        timer.measureTimeOnAllSizes(List.of(1000, 2000, 4000, 8000, 16000, 32000, 64000));
     }
 
     public static void measureSumOf2DArray() {
         Array2DSumTimer timer = new Array2DSumTimer();
         double time = timer.measureTimeOnOneSize(1000);
         System.out.println("elapsed time: " + time);
-        //timer.measureTimeOnAllSizes(List.of(1000, 2000, 4000, 8000, 16000, 32000, 64000));
+        timer.measureTimeOnAllSizes(List.of(100, 200, 400, 800, 1600, 3200, 6400));
     }
 
     public static void measureFibonacci() {
