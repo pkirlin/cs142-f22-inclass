@@ -14,7 +14,14 @@ public class Array2DSumTimer extends CodeTimer {
         // You may need to modify the 1000 here if the code runs too fast or too slow.
         for (int x = 0; x < 1000; x++) { // for loop that runs the code inside many times
 
-            // WRITE CODE HERE
+            int sum = 0;
+            for (int i = 0; i < randomNums.length; i++)
+            {
+                for (int j = 0; j < randomNums[i].length; j++)
+                {
+                    sum += randomNums[i][j];
+                }
+            }
 
         }
 
